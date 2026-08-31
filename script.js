@@ -1,0 +1,11 @@
+const navLinks=[...document.querySelectorAll('.nav nav a')], sections=[...document.querySelectorAll('main section[id]')];
+const nav=document.querySelector('.nav'), menu=document.querySelector('.menu-btn');
+menu.addEventListener('click',()=>{const o=nav.classList.toggle('open');menu.setAttribute('aria-expanded',o)});
+document.querySelectorAll('a[href^="#"]').forEach(a=>a.addEventListener('click',()=>nav.classList.remove('open')));
+const observer=new IntersectionObserver(entries=>entries.forEach(e=>{if(e.isIntersecting){navLinks.forEach(a=>a.classList.toggle('active',a.getAttribute('href')==='#'+e.target.id))}}),{rootMargin:'-35% 0px -55% 0px'});sections.forEach(s=>observer.observe(s));
+const filters=document.querySelectorAll('.filters button'), projects=document.querySelectorAll('.project');
+filters.forEach(b=>b.addEventListener('click',()=>{filters.forEach(x=>x.classList.remove('selected'));b.classList.add('selected');const f=b.dataset.filter;projects.forEach(p=>p.classList.toggle('hidden',f!=='all'&&!p.dataset.category.includes(f)))}));
+const modal=document.querySelector('.modal'), modalImg=modal.querySelector('img'), modalTitle=document.querySelector('#modal-title'), close=document.querySelector('.close');
+document.querySelectorAll('.cert').forEach(c=>c.addEventListener('click',()=>{modal.hidden=false;modalImg.src=c.dataset.img;modalImg.alt=c.querySelector('img').alt;modalTitle.textContent=c.dataset.title;close.focus();document.body.style.overflow='hidden'}));
+function shut(){modal.hidden=true;document.body.style.overflow=''} close.addEventListener('click',shut);modal.addEventListener('click',e=>{if(e.target===modal)shut()});document.addEventListener('keydown',e=>{if(e.key==='Escape'&&!modal.hidden)shut()});
+const topBtn=document.querySelector('.top-btn');window.addEventListener('scroll',()=>topBtn.classList.toggle('show',scrollY>500));topBtn.addEventListener('click',()=>scrollTo({top:0,behavior:'smooth'}));
